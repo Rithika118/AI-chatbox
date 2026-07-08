@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model Conversation {
+  id        Int       @id @default(autoincrement())
+  sessionId String    @unique
+  createdAt DateTime  @default(now())
+  messages  Message[]
+}
+
+model Message {
+  id            Int          @id @default(autoincrement())
+  conversation  Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
+  role          String
+  content       String
+  imageData     String?
+  documentData  String?
+  createdAt     DateTime     @default(now())
+}
